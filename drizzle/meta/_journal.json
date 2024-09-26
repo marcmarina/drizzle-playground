@@ -15,6 +15,20 @@
       "when": 1727340334204,
       "tag": "0001_adorable_puppet_master",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1727341698915,
+      "tag": "0002_left_vapor",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1727341800377,
+      "tag": "0003_fearless_santa_claus",
+      "breakpoints": true
     }
   ]
 }

@@ -6,3 +6,11 @@ export const users = pgTable("users", {
   lastName: varchar("last_name").notNull(),
   age: smallint("age").notNull(),
 });
+
+export const posts = pgTable("posts", {
+  id: serial("id"),
+  body: varchar("body"),
+  userId: smallint("user_id")
+    .references(() => users.id)
+    .notNull(),
+});
