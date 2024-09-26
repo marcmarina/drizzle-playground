@@ -1,11 +1,9 @@
-version: "2"
-
-name: kysely
+name: drizzle
 
 services:
   db:
     image: postgres:16.2
-    container_name: kysely_db
+    container_name: drizzle_db
     environment:
       POSTGRES_DB: playground
       POSTGRES_USER: user
