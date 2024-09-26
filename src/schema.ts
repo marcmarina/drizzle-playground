@@ -12,18 +12,15 @@ export const users = pgTable("users", {
   name: varchar("name").notNull(),
   lastName: varchar("last_name").notNull(),
   age: smallint("age").notNull(),
-  createdAt: timestamp("created_at", {
-    mode: "date",
-  })
-    .notNull()
-    .defaultNow(),
 });
 
 export const posts = pgTable("posts", {
   id: serial("id"),
   body: varchar("body").notNull(),
   userId: smallint("user_id")
-    .references(() => users.id)
+    .references(() => users.id, {
+      onUpdate: "cascade",
+    })
     .notNull(),
 });
 
