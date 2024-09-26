@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { client, sql } from "./database";
-import { posts, users } from "./schema";
+import { posts, users } from "./drizzle/schema";
 
 async function main() {
   await client.connect();
