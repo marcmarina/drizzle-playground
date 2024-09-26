@@ -1,0 +1,14 @@
+version: "2"
+
+name: kysely
+
+services:
+  db:
+    image: postgres:16.2
+    container_name: kysely_db
+    environment:
+      POSTGRES_DB: playground
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
