@@ -1,15 +1,22 @@
 import { client, sql } from "./database";
+import { users } from "./schema";
 
 async function main() {
   await client.connect();
 
-  const res = await sql.query.users.findMany({
+  const rows = await sql.query.users.findMany({
     with: {
       posts: true,
     },
   });
 
-  console.dir(res, {
+  console.dir(rows, {
+    depth: null,
+  });
+
+  const rows2 = await sql.select().from(users);
+
+  console.dir(rows2, {
     depth: null,
   });
 
