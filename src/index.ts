@@ -1,14 +1,12 @@
-import { sql } from "./database";
+import { createServer } from "./server";
 
 async function main() {
-  const rows = await sql.query.users.findMany({
-    with: {
-      posts: true,
-    },
-  });
+  const server = createServer();
 
-  console.dir(rows, {
-    depth: null,
+  const port = Number(process.env.PORT) || 8080;
+
+  server.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
   });
 }
 
