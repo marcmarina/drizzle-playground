@@ -1,15 +1,12 @@
-import { drizzle } from "drizzle-orm/node-postgres";
-import { Client } from "pg";
+import { drizzle } from "drizzle-orm/better-sqlite3";
 import * as schema from "./schema";
 
-export const client = new Client({
-  host: "localhost",
-  database: "playground",
-  user: "user",
-  password: "password",
-  port: 5432,
-});
+import Database from "better-sqlite3";
 
-export const sql = drizzle(client, {
+import path from "path";
+
+const database = new Database(path.join(__dirname, "..", ".tmp", "db.sqlite"));
+
+export const sql = drizzle(database, {
   schema: schema,
 });

@@ -74,3 +74,5 @@ schema-export
 .turbo
 
 /deps
+
+.tmp

@@ -1,58 +1,39 @@
 import { relations } from "drizzle-orm";
-import { pgTable, serial, smallint, varchar } from "drizzle-orm/pg-core";
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  name: varchar("name").notNull(),
-  lastName: varchar("last_name").notNull(),
-  age: smallint("age").notNull(),
+export const users = sqliteTable("users", {
+  id: integer("id")
+    .primaryKey({
+      autoIncrement: true,
+    })
+    .unique(),
+  firstName: text("first_name").notNull(),
+  lastName: text("last_name").notNull(),
 });
 
-export const userRelations = relations(users, ({ many }) => ({
-  posts: many(posts),
-  comments: many(comments),
-}));
-
-export const posts = pgTable("posts", {
-  id: serial("id").primaryKey(),
-  body: varchar("body").notNull(),
-  userId: smallint("user_id")
-    .references(() => users.id, {
-      onUpdate: "cascade",
-    })
-    .notNull(),
+export const userRelations = relations(users, ({ many }) => {
+  return {
+    posts: many(posts),
+  };
 });
 
-export const postsRelations = relations(posts, ({ one, many }) => ({
-  user: one(users, {
-    fields: [posts.userId],
-    references: [users.id],
-  }),
-  comments: many(comments),
-}));
-
-export const comments = pgTable("comments", {
-  id: serial("id").primaryKey(),
-  body: varchar("body").notNull(),
-  userId: smallint("user_id")
-    .references(() => users.id, {
-      onUpdate: "cascade",
+export const posts = sqliteTable("posts", {
+  id: integer("id")
+    .primaryKey({
+      autoIncrement: true,
     })
+    .unique(),
+  userId: integer("id")
+    .references(() => users.id)
     .notNull(),
-  postId: smallint("post_id")
-    .references(() => posts.id, {
-      onUpdate: "cascade",
-    })
-    .notNull(),
+  body: text("body").notNull(),
 });
 
-export const commentsRelations = relations(comments, ({ one }) => ({
-  post: one(posts, {
-    fields: [comments.postId],
-    references: [posts.id],
-  }),
-  user: one(users, {
-    fields: [comments.userId],
-    references: [users.id],
-  }),
-}));
+export const postRelations = relations(posts, ({ one }) => {
+  return {
+    user: one(users, {
+      fields: [posts.userId],
+      references: [users.id],
+    }),
+  };
+});
