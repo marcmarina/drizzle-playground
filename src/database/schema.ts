@@ -14,6 +14,7 @@ export const users = sqliteTable("users", {
 export const userRelations = relations(users, ({ many }) => {
   return {
     posts: many(posts),
+    comments: many(comments),
   };
 });
 
@@ -29,11 +30,40 @@ export const posts = sqliteTable("posts", {
   body: text("body").notNull(),
 });
 
-export const postRelations = relations(posts, ({ one }) => {
+export const postRelations = relations(posts, ({ one, many }) => {
   return {
     user: one(users, {
       fields: [posts.userId],
       references: [users.id],
+    }),
+    comments: many(comments),
+  };
+});
+
+export const comments = sqliteTable("comments", {
+  id: integer("id")
+    .primaryKey({
+      autoIncrement: true,
+    })
+    .unique(),
+  postId: integer("postId")
+    .references(() => posts.id)
+    .notNull(),
+  authorId: integer("authorId")
+    .references(() => users.id)
+    .notNull(),
+  body: text("body").notNull(),
+});
+
+export const commentsRelations = relations(comments, ({ one }) => {
+  return {
+    author: one(users, {
+      fields: [comments.authorId],
+      references: [users.id],
+    }),
+    post: one(posts, {
+      fields: [comments.postId],
+      references: [posts.id],
     }),
   };
 });
