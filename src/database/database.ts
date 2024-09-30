@@ -5,7 +5,7 @@ import path from "path";
 import * as schema from "./schema";
 
 export const database: Database = new SQLite(
-  path.join(__dirname, "..", "..", ".tmp", "db.sqlite"),
+  path.join(__dirname, "..", "..", "database", "db.sqlite")
 );
 
 export const sql = drizzle(database, {
