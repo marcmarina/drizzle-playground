@@ -1,12 +1,13 @@
+import "dotenv/config";
+
+import { config } from "./config";
 import { createServer } from "./server";
 
 async function main() {
   const server = createServer();
 
-  const port = Number(process.env.PORT) || 8080;
-
-  server.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
+  server.listen(config.server.port, () => {
+    console.log(`Server listening on port ${config.server.port}`);
   });
 }
 
