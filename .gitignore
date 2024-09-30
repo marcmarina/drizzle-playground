@@ -76,3 +76,5 @@ schema-export
 /deps
 
 .tmp
+
+.env
