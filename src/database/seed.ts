@@ -1,5 +1,5 @@
 import { sql } from "./database";
-import { posts, users } from "./schema";
+import { comments, posts, users } from "./schema";
 
 async function main() {
   const newUsers = await sql
@@ -37,6 +37,12 @@ async function main() {
       },
     ])
     .returning();
+
+  const newComments = await sql.insert(comments).values({
+    authorId: newUsers[0].id,
+    postId: newPosts[0].id,
+    body: "This is a comment.",
+  });
 }
 
 main();
