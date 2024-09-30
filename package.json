@@ -7,7 +7,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "drizzle-kit": "drizzle-kit --config=./src/drizzle.config.ts",
+    "drizzle-kit": "drizzle-kit --config=./src/database/drizzle.config.ts",
     "prepare": "husky",
     "services:start": "docker compose -f docker-compose.dev.yml up",
     "services:stop": "docker compose -f docker-compose.dev.yml down",
