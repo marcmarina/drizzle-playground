@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { createInsertSchema } from "drizzle-zod";
 
 export const users = sqliteTable("users", {
   id: integer("id")
@@ -17,6 +18,8 @@ export const userRelations = relations(users, ({ many }) => {
     comments: many(comments),
   };
 });
+
+export const newUserSchema = createInsertSchema(users);
 
 export const posts = sqliteTable("posts", {
   id: integer("id")
