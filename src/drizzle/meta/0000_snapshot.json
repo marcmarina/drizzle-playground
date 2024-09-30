@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "1c286a78-bf61-43f3-8664-d3bedf31671d",
+  "id": "13cd40fb-f300-4237-be76-a232e0832941",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "posts": {
@@ -9,6 +9,13 @@
       "columns": {
         "id": {
           "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -32,12 +39,12 @@
         }
       },
       "foreignKeys": {
-        "posts_id_users_id_fk": {
-          "name": "posts_id_users_id_fk",
+        "posts_userId_users_id_fk": {
+          "name": "posts_userId_users_id_fk",
           "tableFrom": "posts",
           "tableTo": "users",
           "columnsFrom": [
-            "id"
+            "userId"
           ],
           "columnsTo": [
             "id"

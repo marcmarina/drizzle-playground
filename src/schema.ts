@@ -23,7 +23,7 @@ export const posts = sqliteTable("posts", {
       autoIncrement: true,
     })
     .unique(),
-  userId: integer("id")
+  userId: integer("userId")
     .references(() => users.id)
     .notNull(),
   body: text("body").notNull(),
