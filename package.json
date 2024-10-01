@@ -9,8 +9,8 @@
     "build": "tsc",
     "drizzle-kit": "drizzle-kit --config=./src/drizzle.config.ts",
     "prepare": "husky",
-    "services:start": "docker-compose -f docker-compose.dev.yml up",
-    "services:stop": "docker-compose -f docker-compose.dev.yml down",
+    "services:start": "docker compose -f docker-compose.dev.yml up",
+    "services:stop": "docker compose -f docker-compose.dev.yml down",
     "start": "ts-node src/index.ts"
   },
   "dependencies": {
