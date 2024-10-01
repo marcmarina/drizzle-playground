@@ -2,12 +2,11 @@ FROM node:20-slim
 
 WORKDIR /usr/src/app
 
-COPY package.json yarn.lock ./
+COPY package.json yarn.lock tsconfig.json ./
 
 RUN yarn install
 
 COPY ./src ./src
-COPY tsconfig.json ./
 
 RUN yarn build
 
