@@ -2,7 +2,8 @@ FROM node:20-slim
 
 WORKDIR /usr/src/app
 
-COPY package.json yarn.lock tsconfig.json ./
+COPY package.json yarn.lock tsconfig.json .yarnrc.yml ./
+COPY ./.yarn ./.yarn
 
 RUN yarn install
 
@@ -10,6 +11,6 @@ COPY ./src ./src
 
 RUN yarn build
 
-RUN yarn install --production
+RUN yarn workspaces focus -A --production
 
 RUN mkdir database
