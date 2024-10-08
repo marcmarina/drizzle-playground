@@ -20,6 +20,8 @@
     "drizzle-zod": "^0.5.1",
     "express": "^4.21.0",
     "pg": "^8.13.0",
+    "pino": "^9.4.0",
+    "pino-pretty": "^11.2.2",
     "sort-package-json": "^2.10.1",
     "ts-node": "^10.9.2",
     "turbo": "^1.12.4",

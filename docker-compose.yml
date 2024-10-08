@@ -5,8 +5,11 @@ services:
     build: .
     container_name: api
     command: node .
+    tty: true
     environment:
       PORT: 8080
+      LOG_LEVEL: info
+      LOG_FORMAT: pretty
     ports:
       - "8080:8080"
     volumes:
