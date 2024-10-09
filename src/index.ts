@@ -3,6 +3,7 @@ import "dotenv/config";
 import { config } from "./config";
 import { createServer } from "./server";
 import { logger } from "./logger";
+import { createHttpTerminator } from "http-terminator";
 
 async function main() {
   const server = createServer();
@@ -13,13 +14,18 @@ async function main() {
 
   const exitSignals: NodeJS.Signals[] = ["SIGINT", "SIGTERM"];
 
+  const terminator = createHttpTerminator({
+    server,
+    gracefulTerminationTimeout: 3000,
+  });
+
   exitSignals.forEach((s) => {
-    process.on(s, () => {
+    process.on(s, async () => {
       logger.info(`${s} signal received. Closing server.`);
 
-      server.close(() => {
-        process.exit(1);
-      });
+      await terminator.terminate();
+
+      process.exit(0);
     });
   });
 }
