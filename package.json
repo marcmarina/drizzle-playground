@@ -31,5 +31,6 @@
     "lint-staged": "^15.2.10",
     "prettier": "^3.3.3",
     "prettier-package-json": "^2.6.4"
-  }
+  },
+  "packageManager": "yarn@4.5.0"
 }
