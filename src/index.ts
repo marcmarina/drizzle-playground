@@ -1,26 +1,33 @@
-import { client, sql } from "./database";
-import { users } from "./schema";
+import "dotenv/config";
+
+import { config } from "./config";
+import { createServer } from "./server";
+import { logger } from "./logger";
+import { createHttpTerminator } from "http-terminator";
 
 async function main() {
-  await client.connect();
+  const server = createServer();
 
-  const rows = await sql.query.users.findMany({
-    with: {
-      posts: true,
-    },
+  server.listen(config.server.port, () => {
+    logger.info(`Server listening on port ${config.server.port}`);
   });
 
-  console.dir(rows, {
-    depth: null,
+  const exitSignals: NodeJS.Signals[] = ["SIGINT", "SIGTERM"];
+
+  const terminator = createHttpTerminator({
+    server,
+    gracefulTerminationTimeout: 3000,
   });
 
-  const rows2 = await sql.select().from(users);
+  exitSignals.forEach((s) => {
+    process.on(s, async () => {
+      logger.info(`${s} signal received. Closing server.`);
 
-  console.dir(rows2, {
-    depth: null,
+      await terminator.terminate();
+
+      process.exit(0);
+    });
   });
-
-  await client.end();
 }
 
 main();
