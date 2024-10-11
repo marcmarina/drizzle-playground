@@ -2,11 +2,26 @@ import express, { NextFunction, Request, Response } from "express";
 import http from "http";
 import { ZodError } from "zod";
 import { userRoutes } from "./routes";
+import { context, httpContextMiddleware } from "./utils/context";
 
 export function createServer() {
   const app = express();
 
   app.use(express.json());
+
+  app.use(httpContextMiddleware);
+
+  app.use((req, res, next) => {
+    const store = context.getStore();
+
+    const requestId = req.header("x-request-id") ?? crypto.randomUUID();
+
+    store?.set("requestId", requestId);
+
+    res.set("x-request-id", requestId);
+
+    next();
+  });
 
   app.get("/_health", (req, res, next) => {
     res.send("OK");
