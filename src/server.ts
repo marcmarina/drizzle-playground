@@ -6,11 +6,14 @@ import http from "http";
 import { userRoutes } from "./routes";
 import { ZodError } from "zod";
 import { logger } from "./logger";
+import { context, httpContextMiddleware } from "./utils/context";
 
 export function createServer() {
   const app = new Koa();
 
   app.use(bodyParser());
+
+  app.use(httpContextMiddleware);
 
   app.use(async (ctx, next) => {
     try {
@@ -31,6 +34,9 @@ export function createServer() {
   app.use(async (ctx, next) => {
     const requestId = ctx.get("x-request-id") || crypto.randomUUID();
 
+    const store = context.getStore();
+
+    store?.set("requestId", requestId);
     ctx.set("requestId", requestId);
 
     await next();
