@@ -1,45 +1,38 @@
-import express, { NextFunction, Request, Response } from "express";
+import Koa from "koa";
+import Router from "koa-router";
+import bodyParser from "koa-bodyparser";
 import http from "http";
-import { ZodError } from "zod";
+
 import { userRoutes } from "./routes";
-import { context, httpContextMiddleware } from "./utils/context";
 
 export function createServer() {
-  const app = express();
+  const app = new Koa();
 
-  app.use(express.json());
+  app.use(bodyParser());
 
-  app.use(httpContextMiddleware);
+  app.use(async (ctx, next) => {
+    const requestId = ctx.get("x-request-id") || crypto.randomUUID();
 
-  app.use((req, res, next) => {
-    const store = context.getStore();
+    ctx.set("requestId", requestId);
 
-    const requestId = req.header("x-request-id") ?? crypto.randomUUID();
-
-    store?.set("requestId", requestId);
-
-    res.set("x-request-id", requestId);
-
-    next();
+    await next();
   });
 
-  app.get("/_health", (req, res, next) => {
-    res.send("OK");
+  const router = new Router();
+
+  router.get("/_health", (ctx) => {
+    ctx.body = "OK";
   });
 
-  app.use(userRoutes);
+  app.use(router.routes());
 
-  app.use((req, res, next) => {
-    res.send(`${req.method} ${req.path} not found`);
+  app.use(userRoutes.routes());
+
+  app.use((ctx) => {
+    ctx.status = 404;
+
+    ctx.body = `${ctx.method} ${ctx.path} not found`;
   });
 
-  app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-    if (error instanceof ZodError) {
-      res.status(400).send(error.message);
-    } else {
-      res.status(500).send(error.message);
-    }
-  });
-
-  return http.createServer(app);
+  return http.createServer(app.callback());
 }
