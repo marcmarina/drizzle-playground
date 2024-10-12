@@ -1,46 +1,37 @@
-import { Router } from "express";
-import { schema, sql } from "../database";
+import Router from "koa-router";
 import { eq } from "drizzle-orm";
 
-export const userRoutes = Router();
+import { schema, sql } from "../database";
 
-userRoutes.post("/users", async (req, res, next) => {
-  try {
-    const values = schema.newUserSchema.parse(req.body);
+export const userRoutes = new Router();
 
-    const [newUser] = await sql.insert(schema.users).values(values).returning();
+userRoutes.post("/users", async (ctx) => {
+  const values = schema.newUserSchema.parse(ctx.request.body);
 
-    res.status(201).send(newUser);
-  } catch (e) {
-    next(e);
-  }
+  const [newUser] = await sql.insert(schema.users).values(values).returning();
+
+  ctx.status = 201;
+  ctx.body = newUser;
 });
 
-userRoutes.get("/users/:id", async (req, res, next) => {
-  try {
-    const user = await sql.query.users.findFirst({
-      where: eq(schema.users.id, Number(req.params.id)),
-      with: {
-        posts: true,
-      },
-    });
+userRoutes.get("/users/:id", async (ctx) => {
+  const user = await sql.query.users.findFirst({
+    where: eq(schema.users.id, Number(ctx.params.id)),
+    with: {
+      posts: true,
+    },
+  });
 
-    res.send(user ?? null);
-  } catch (e) {
-    next(e);
-  }
+  ctx.body = user;
 });
 
-userRoutes.get("/users", async (req, res, next) => {
-  try {
-    const users = await sql.query.users.findMany({
-      with: {
-        posts: true,
-      },
-    });
+userRoutes.get("/users", async (ctx) => {
+  const users = await sql.query.users.findMany({
+    with: {
+      posts: true,
+    },
+  });
 
-    res.send(users);
-  } catch (e) {
-    next(e);
-  }
+  ctx.status = 200;
+  ctx.body = users;
 });
