@@ -4,11 +4,29 @@ import bodyParser from "koa-bodyparser";
 import http from "http";
 
 import { userRoutes } from "./routes";
+import { ZodError } from "zod";
+import { logger } from "./logger";
 
 export function createServer() {
   const app = new Koa();
 
   app.use(bodyParser());
+
+  app.use(async (ctx, next) => {
+    try {
+      await next();
+    } catch (err) {
+      ctx.status = 500;
+
+      if (err instanceof ZodError) {
+        ctx.status = 400;
+      }
+
+      logger.error(err, "Request error");
+
+      ctx.body = err;
+    }
+  });
 
   app.use(async (ctx, next) => {
     const requestId = ctx.get("x-request-id") || crypto.randomUUID();
