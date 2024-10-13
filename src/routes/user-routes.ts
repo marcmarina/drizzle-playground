@@ -18,7 +18,11 @@ userRoutes.get("/users/:id", async (ctx) => {
   const user = await sql.query.users.findFirst({
     where: eq(schema.users.id, Number(ctx.params.id)),
     with: {
-      posts: true,
+      posts: {
+        with: {
+          comments: true,
+        },
+      },
     },
   });
 
@@ -26,12 +30,7 @@ userRoutes.get("/users/:id", async (ctx) => {
 });
 
 userRoutes.get("/users", async (ctx) => {
-  const users = await sql.query.users.findMany({
-    with: {
-      posts: true,
-    },
-  });
+  const users = await sql.query.users.findMany();
 
-  ctx.status = 200;
   ctx.body = users;
 });

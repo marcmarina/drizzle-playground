@@ -38,11 +38,28 @@ async function main() {
     ])
     .returning();
 
-  const newComments = await sql.insert(comments).values({
-    authorId: newUsers[0].id,
-    postId: newPosts[0].id,
-    body: "This is a comment.",
-  });
+  const newComments = await sql.insert(comments).values([
+    {
+      authorId: newUsers[0].id,
+      postId: newPosts[0].id,
+      body: "This is a comment.",
+    },
+    {
+      authorId: newUsers[1].id,
+      postId: newPosts[0].id,
+      body: "This is a comment.",
+    },
+    {
+      authorId: newUsers[0].id,
+      postId: newPosts[1].id,
+      body: "This is a comment.",
+    },
+    {
+      authorId: newUsers[1].id,
+      postId: newPosts[1].id,
+      body: "This is a comment.",
+    },
+  ]);
 }
 
 main();
