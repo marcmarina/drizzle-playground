@@ -1,0 +1,22 @@
+name: drizzle
+
+services:
+  app:
+    build: .
+    command: node .
+    tty: true
+    environment:
+      PORT: 8080
+      LOG_LEVEL: info
+      LOG_FORMAT: pretty
+    volumes:
+      - "./database:/usr/src/app/database"
+
+  nginx:
+    image: nginx
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./nginx:/etc/nginx/conf.d"
+    depends_on:
+      - app
