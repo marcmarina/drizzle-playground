@@ -15,6 +15,7 @@ import {
  */
 export const string = (variableName: string): string => {
   const value = process.env[variableName];
+
   if (!value) {
     throw new MissingEnvironmentVariableError(variableName);
   }
