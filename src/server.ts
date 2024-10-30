@@ -7,6 +7,7 @@ import { userRoutes } from "./routes";
 import { ZodError } from "zod";
 import { logger } from "./logger";
 import { context, httpContextMiddleware } from "./utils/context";
+import { config } from "./config";
 
 export function createServer() {
   const app = new Koa();
@@ -18,6 +19,16 @@ export function createServer() {
   app.use(async (ctx, next) => {
     try {
       await next();
+
+      if (config.server.requestLogging.enabled) {
+        logger.info(
+          {
+            req: ctx.request,
+            res: ctx.response,
+          },
+          "Request completed"
+        );
+      }
     } catch (err) {
       ctx.status = 500;
 
@@ -25,7 +36,16 @@ export function createServer() {
         ctx.status = 400;
       }
 
-      logger.error(err, "Request error");
+      if (config.server.requestLogging.enabled) {
+        logger.error(
+          {
+            err,
+            req: ctx.request,
+            res: ctx.response,
+          },
+          "Request error"
+        );
+      }
 
       ctx.body = err;
     }

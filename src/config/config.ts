@@ -1,7 +1,10 @@
-import { integer, oneOf } from "./helpers";
+import { boolean, integer, oneOf } from "./helpers";
 
 export const server = {
   port: integer("PORT"),
+  requestLogging: {
+    enabled: boolean("ENABLE_REQUEST_LOGGING"),
+  },
 };
 
 export const logger = {
