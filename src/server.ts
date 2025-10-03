@@ -1,82 +1,47 @@
-import Koa from "koa";
-import Router from "koa-router";
-import bodyParser from "koa-bodyparser";
 import http from "http";
+import promBundle from "express-prom-bundle";
 
 import { userRoutes } from "./routes";
+import { httpContextMiddleware } from "./utils/context";
+import express, { Router } from "express";
 import { ZodError } from "zod";
-import { logger } from "./logger";
-import { context, httpContextMiddleware } from "./utils/context";
-import { config } from "./config";
 
 export function createServer() {
-  const app = new Koa();
+  const app = express();
 
-  app.use(bodyParser());
+  app.use(
+    promBundle({
+      formatStatusCode: (res) => res.statusCode.toString().charAt(0) + "xx",
+      buckets: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 15],
+      includeMethod: true,
+      includePath: true,
+      includeStatusCode: true,
+    })
+  );
+
+  app.use(express.json());
 
   app.use(httpContextMiddleware);
 
-  app.use(async (ctx, next) => {
-    try {
-      await next();
+  const router = Router();
 
-      if (config.server.requestLogging.enabled) {
-        logger.info(
-          {
-            req: ctx.request,
-            res: ctx.response,
-          },
-          "Request completed"
-        );
-      }
-    } catch (err) {
-      ctx.status = 500;
+  router.get("/_health", (req, res) => {
+    res.send("OK");
+  });
 
-      if (err instanceof ZodError) {
-        ctx.status = 400;
-      }
+  app.use(router);
 
-      if (config.server.requestLogging.enabled) {
-        logger.error(
-          {
-            err,
-            req: ctx.request,
-            res: ctx.response,
-          },
-          "Request error"
-        );
-      }
+  app.use(userRoutes);
 
-      ctx.body = err;
+  app.use((error, req, res, next) => {
+    res.status(500);
+
+    if (error instanceof ZodError) {
+      res.status(400);
     }
+
+    res.send(error);
   });
 
-  app.use(async (ctx, next) => {
-    const requestId = ctx.get("x-request-id") || crypto.randomUUID();
-
-    const store = context.getStore();
-
-    store?.set("requestId", requestId);
-    ctx.set("requestId", requestId);
-
-    await next();
-  });
-
-  const router = new Router();
-
-  router.get("/_health", (ctx) => {
-    ctx.body = "OK";
-  });
-
-  app.use(router.routes());
-
-  app.use(userRoutes.routes());
-
-  app.use((ctx) => {
-    ctx.status = 404;
-
-    ctx.body = `${ctx.method} ${ctx.path} not found`;
-  });
-
-  return http.createServer(app.callback());
+  return http.createServer(app);
 }

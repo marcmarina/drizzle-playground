@@ -15,6 +15,7 @@
     "noImplicitAny": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "noUnusedParameters": false,
     "resolveJsonModule": true,
     "outDir": "dist",
     "rootDir": "src"

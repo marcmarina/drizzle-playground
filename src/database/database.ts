@@ -1,13 +1,18 @@
-import { drizzle } from "drizzle-orm/better-sqlite3";
-import SQLite, { Database } from "better-sqlite3";
-import path from "path";
+import { drizzle } from "drizzle-orm/node-postgres";
 
 import * as schema from "./schema";
+import { Pool } from "pg";
+import { config } from "../config";
 
-export const database: Database = new SQLite(
-  path.join(__dirname, "..", "..", "database", "db.sqlite")
-);
+export const pool = new Pool({
+  host: config.database.host,
+  port: config.database.port,
+  database: config.database.database,
+  user: config.database.user,
+  password: config.database.password,
+  ssl: config.database.ssl,
+});
 
-export const sql = drizzle(database, {
+export const sql = drizzle(pool, {
   schema: schema,
 });
