@@ -5,25 +5,12 @@ services:
     build: .
     command: node .
     tty: true
+    stdin_open: true
     env_file: .env
     environment:
       PORT: 8080
       LOG_LEVEL: info
       LOG_FORMAT: pretty
     network_mode: host
-
-  db:
-    image: postgres:16.2
-    environment:
-      POSTGRES_DB: database
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-    ports:
-      - "5432:5432"
-    volumes:
-      - "postgres_data:/var/lib/postgresql"
     restart: unless-stopped
-    network_mode: host
 
-volumes:
-  postgres_data:
