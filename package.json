@@ -14,7 +14,7 @@
     "start": "nodemon --exec ts-node src/index.ts"
   },
   "dependencies": {
-    "dotenv": "^16.4.5",
+    "dotenv": "17.2.3",
     "drizzle-orm": "^0.33.0",
     "drizzle-zod": "^0.5.1",
     "express": "^5.1.0",
