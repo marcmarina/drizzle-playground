@@ -8,9 +8,18 @@ services:
     stdin_open: true
     env_file: .env
     environment:
-      PORT: 8080
+      PORT: 3000
       LOG_LEVEL: info
       LOG_FORMAT: pretty
-    network_mode: host
     restart: unless-stopped
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.drizzle.rule=Host(`drizzle.local`)"
+      - "traefik.http.routers.drizzle.entrypoints=web"
+      - "traefik.http.services.drizzle.loadbalancer.server.port=3000"
 
+networks:
+  traefik:
+    external: true
