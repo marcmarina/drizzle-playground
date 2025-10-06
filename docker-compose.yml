@@ -6,7 +6,6 @@ services:
     command: node .
     tty: true
     stdin_open: true
-    env_file: .env.docker
     restart: unless-stopped
     networks:
       - traefik
