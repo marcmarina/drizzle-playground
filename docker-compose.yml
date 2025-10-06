@@ -6,14 +6,11 @@ services:
     command: node .
     tty: true
     stdin_open: true
-    env_file: .env
-    environment:
-      PORT: 8081
-      LOG_LEVEL: info
-      LOG_FORMAT: pretty
+    env_file: .env.docker
     restart: unless-stopped
     networks:
       - traefik
+      - databases
     labels:
       - "traefik.docker.network=traefik"
       - "traefik.enable=true"
@@ -23,4 +20,6 @@ services:
 
 networks:
   traefik:
+    external: true
+  databases:
     external: true
