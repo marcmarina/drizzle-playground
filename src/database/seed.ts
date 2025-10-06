@@ -17,6 +17,8 @@ async function main() {
       },
     ])
     .returning();
+
+  console.log(`Inserted ${newUsers.length} users`);
 }
 
 main();
