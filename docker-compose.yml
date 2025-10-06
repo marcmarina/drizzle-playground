@@ -15,6 +15,7 @@ services:
     networks:
       - traefik
     labels:
+      - "traefik.docker.network=traefik"
       - "traefik.enable=true"
       - "traefik.http.routers.drizzle.rule=Host(`drizzle.local`)"
       - "traefik.http.routers.drizzle.entrypoints=web"
