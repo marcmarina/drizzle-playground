@@ -1,5 +1,6 @@
 import http from "http";
 import promBundle from "express-prom-bundle";
+import cors from "cors";
 
 import { userRoutes } from "./routes";
 import { httpContextMiddleware } from "./utils/context";
@@ -8,6 +9,8 @@ import { ZodError } from "zod";
 
 export function createServer() {
   const app = express();
+
+  app.use(cors());
 
   app.use(
     promBundle({
