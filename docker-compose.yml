@@ -14,8 +14,9 @@ services:
     labels:
       - "traefik.docker.network=traefik"
       - "traefik.enable=true"
-      - "traefik.http.routers.drizzle.rule=Host(`drizzle.local`)"
-      - "traefik.http.routers.drizzle.entrypoints=web"
+      - "traefik.http.routers.drizzle.rule=Host(`drizzle.marcmarina.com`)"
+      - "traefik.http.routers.drizzle.entrypoints=websecure"
+      - "traefik.http.routers.drizzle.tls.certresolver=letsencrypt"
       - "traefik.http.services.drizzle.loadbalancer.server.port=8081"
 
 networks:
