@@ -6,12 +6,13 @@ import { userRoutes } from "./routes";
 import { httpContextMiddleware } from "./utils/context";
 import express, { Router } from "express";
 import { ZodError } from "zod";
+import { httpLogger } from "./logger";
 
 export function createServer() {
   const app = express();
 
   app.use(cors());
-
+  app.use(express.json());
   app.use(
     promBundle({
       formatStatusCode: (res) => res.statusCode.toString().charAt(0) + "xx",
@@ -21,10 +22,9 @@ export function createServer() {
       includeStatusCode: true,
     })
   );
-
-  app.use(express.json());
-
   app.use(httpContextMiddleware);
+
+  app.use(httpLogger);
 
   const router = Router();
 

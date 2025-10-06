@@ -7,6 +7,9 @@ export const server = {
 export const logger = {
   level: oneOf("LOG_LEVEL", ["silent", "debug", "info", "warn", "error"]),
   format: oneOf("LOG_FORMAT", ["pretty", "json"]),
+  requestLogging: {
+    enabled: boolean("REQUEST_LOGGING_ENABLED"),
+  },
 };
 
 export const database = {
