@@ -29,7 +29,7 @@ export function createServer() {
   const router = Router();
 
   router.get("/_health", (req, res) => {
-    res.status(200).send("OK!");
+    res.status(200).send("OK");
   });
 
   app.use(router);
