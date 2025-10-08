@@ -20,6 +20,9 @@ export function createServer() {
       includeMethod: true,
       includePath: true,
       includeStatusCode: true,
+      customLabels: {
+        service: "drizzle-playground",
+      },
     })
   );
   app.use(httpContextMiddleware);
