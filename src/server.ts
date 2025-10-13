@@ -39,14 +39,16 @@ export function createServer() {
 
   app.use(userRoutes);
 
-  app.use((error, req, res, next) => {
-    res.status(500);
+  app.use((error: Error, req, res, next) => {
+    if (res.statusCode === 200) {
+      res.status(500);
+    }
 
     if (error instanceof ZodError) {
       res.status(400);
     }
 
-    res.send(error);
+    res.json(error);
   });
 
   return http.createServer(app);
