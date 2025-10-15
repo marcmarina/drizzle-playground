@@ -28,6 +28,17 @@ userRoutes.get("/users/:id", async (req, res, next) => {
   }
 });
 
+userRoutes.delete("/users/:id", async (req, res, next) => {
+  try {
+    const user = await sql
+      .delete(schema.users)
+      .where(eq(schema.users.id, Number(req.params.id)));
+    res.send(user);
+  } catch (error) {
+    next(error);
+  }
+});
+
 userRoutes.get("/users", async (req, res, next) => {
   try {
     const users = await sql.query.users.findMany();
