@@ -1,6 +1,14 @@
 name: drizzle
 
 services:
+  init:
+    build: .
+    command: yarn drizzle-kit migrate
+    env_file:
+      - stack.env
+    networks:
+      - databases
+
   app:
     build: .
     command: node .
@@ -9,6 +17,9 @@ services:
     env_file:
       - stack.env
     restart: unless-stopped
+    depends_on:
+      init:
+        condition: service_completed_successfully
     networks:
       - traefik
       - databases
