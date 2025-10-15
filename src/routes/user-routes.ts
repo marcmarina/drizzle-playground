@@ -33,7 +33,8 @@ userRoutes.delete("/users/:id", async (req, res, next) => {
     const user = await sql
       .delete(schema.users)
       .where(eq(schema.users.id, Number(req.params.id)));
-    res.send(user);
+
+    res.send(user.rowCount);
   } catch (error) {
     next(error);
   }
