@@ -2,7 +2,7 @@ name: drizzle
 
 services:
   init:
-    build: .
+    image: harbor.marcmarina.com/library/drizzle
     command: yarn drizzle-kit migrate
     env_file:
       - stack.env
@@ -10,29 +10,25 @@ services:
       - databases
 
   app:
-    build: .
+    image: harbor.marcmarina.com/library/drizzle
     command: node .
     tty: true
     stdin_open: true
     env_file:
       - stack.env
-    restart: unless-stopped
     depends_on:
       init:
         condition: service_completed_successfully
     networks:
       - traefik
-      - databases
-    labels:
-      - "traefik.docker.network=traefik"
-      - "traefik.enable=true"
-      - "traefik.http.routers.drizzle.rule=Host(`drizzle.marcmarina.com`)"
-      - "traefik.http.routers.drizzle.entrypoints=websecure"
-      - "traefik.http.routers.drizzle.tls.certresolver=letsencrypt"
-      - "traefik.http.services.drizzle.loadbalancer.server.port=8081"
+    deploy:
+      labels:
+        - "traefik.swarm.network=traefik"
+        - "traefik.enable=true"
+        - "traefik.http.routers.drizzle.rule=Host(`drizzle.backend.marcmarina.com`)"
+        - "traefik.http.routers.drizzle.entrypoints=web"
+        - "traefik.http.services.drizzle.loadbalancer.server.port=8081"
 
 networks:
   traefik:
-    external: true
-  databases:
     external: true
