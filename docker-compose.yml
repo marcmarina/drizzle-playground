@@ -5,7 +5,7 @@ services:
     image: harbor.marcmarina.com/library/drizzle
     command: yarn drizzle-kit migrate
     env_file:
-      - stack.env
+      - .env
     networks:
       - databases
 
@@ -15,7 +15,7 @@ services:
     tty: true
     stdin_open: true
     env_file:
-      - stack.env
+      - .env
     depends_on:
       init:
         condition: service_completed_successfully
