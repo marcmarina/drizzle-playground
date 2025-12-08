@@ -1,5 +1,3 @@
-name: drizzle
-
 services:
   init:
     image: harbor.marcmarina.com/library/drizzle
