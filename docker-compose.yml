@@ -4,8 +4,6 @@ services:
     command: yarn drizzle-kit migrate
     env_file:
       - .env
-    networks:
-      - databases
 
   app:
     image: harbor.marcmarina.com/library/drizzle
