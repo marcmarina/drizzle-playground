@@ -12,3 +12,5 @@ COPY ./src ./src
 RUN yarn build
 
 RUN yarn workspaces focus -A --production
+
+CMD ["node", "."]
