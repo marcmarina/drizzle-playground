@@ -1,27 +1,16 @@
+name: drizzle
+
 services:
-  init:
-    image: harbor.marcmarina.com/library/drizzle
-    command: yarn drizzle-kit migrate
-    env_file:
-      - .env
+  db:
+    image: postgres:16.2
+    environment:
+      POSTGRES_DB: database
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - "postgres_data:/var/lib/postgresql"
 
-  app:
-    image: harbor.marcmarina.com/library/drizzle
-    command: node .
-    tty: true
-    stdin_open: true
-    env_file:
-      - .env
-    networks:
-      - traefik
-    deploy:
-      labels:
-        - "traefik.swarm.network=traefik"
-        - "traefik.enable=true"
-        - "traefik.http.routers.drizzle.rule=Host(`drizzle.backend.marcmarina.com`)"
-        - "traefik.http.routers.drizzle.entrypoints=web"
-        - "traefik.http.services.drizzle.loadbalancer.server.port=8081"
-
-networks:
-  traefik:
-    external: true
+volumes:
+  postgres_data:
