@@ -1,0 +1,39 @@
+namespace: default
+
+image:
+  repository: harbor.marcmarina.com/library/drizzle-playground
+  tag: latest
+  pullPolicy: IfNotPresent
+
+container:
+  command: "['node', '.']"
+  port: 8080
+
+deployment:
+  replicaCount: 1
+
+readinessProbe:
+  path: /_health
+
+livenessProbe:
+  path: /_health
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  host: drizzle-playground.backend.marcmarina.com
+
+env:
+  LOG_LEVEL: info
+  LOG_FORMAT: pretty
+  PORT: 8080
+  REQUEST_LOGGING_ENABLED: false
+
+  DB_HOST: localhost
+  DB_PORT: 5432
+  DB_DATABASE: database
+  DB_USER: user
+  DB_PASSWORD: password
+  DB_SSL: false
