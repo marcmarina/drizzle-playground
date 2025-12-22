@@ -23,7 +23,7 @@ service:
   port: 80
 
 ingress:
-  host: drizzle-playground.backend.marcmarina.com
+  host: drizzle-playground.marc-lab.dev
 
 env:
   LOG_LEVEL: info
