@@ -31,9 +31,9 @@ env:
   PORT: 8080
   REQUEST_LOGGING_ENABLED: false
 
-  DB_HOST: localhost
+  DB_HOST: postgresql
   DB_PORT: 5432
-  DB_DATABASE: database
-  DB_USER: user
+  DB_DATABASE: drizzle
+  DB_USER: postgres
   DB_PASSWORD: password
   DB_SSL: false
