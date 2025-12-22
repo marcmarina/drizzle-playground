@@ -12,7 +12,9 @@ export function createServer() {
   const app = express();
 
   app.use(cors());
+
   app.use(express.json());
+
   app.use(
     promBundle({
       formatStatusCode: (res) => res.statusCode.toString().charAt(0) + "xx",
@@ -25,6 +27,7 @@ export function createServer() {
       },
     })
   );
+
   app.use(httpContextMiddleware);
 
   app.use(httpLogger);
