@@ -51,5 +51,3 @@ spec:
           requests:
             cpu: "250m"
             memory: "256Mi"
-      imagePullSecrets:
-      - name: harbor-creds
