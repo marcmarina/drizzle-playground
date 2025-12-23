@@ -1,4 +1,4 @@
-FROM node:20.10-slim AS build
+FROM node:20.19-slim AS build
 
 WORKDIR /usr/src/app
 
@@ -13,7 +13,7 @@ RUN yarn build
 
 RUN yarn workspaces focus -A --production
 
-FROM node:20.10-slim
+FROM node:20.19-slim
 
 WORKDIR /usr/src/app
 
