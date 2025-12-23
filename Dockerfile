@@ -1,4 +1,4 @@
-FROM node:20.10-slim
+FROM node:20.10-slim AS build
 
 WORKDIR /usr/src/app
 
@@ -12,3 +12,9 @@ COPY ./src ./src
 RUN yarn build
 
 RUN yarn workspaces focus -A --production
+
+FROM node:20.10-slim
+
+WORKDIR /usr/src/app
+
+COPY --from=build /usr/src/app/ ./
