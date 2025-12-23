@@ -21,7 +21,7 @@ async function main() {
 
   const terminator = createHttpTerminator({
     server,
-    gracefulTerminationTimeout: 3000,
+    gracefulTerminationTimeout: config.server.gracefulShutdownTimeoutMs,
   });
 
   exitSignals.forEach((s) => {

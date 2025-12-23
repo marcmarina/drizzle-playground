@@ -2,6 +2,7 @@ import { boolean, integer, oneOf, string } from "./helpers";
 
 export const server = {
   port: integer("PORT"),
+  gracefulShutdownTimeoutMs: integer("GRACEFUL_SHUTDOWN_TIMEOUT_MS"),
 };
 
 export const logger = {
