@@ -1,4 +1,5 @@
 {
   "package.json": ["sort-package-json --write"],
-  "*.ts": ["prettier --write"]
+  "*.ts": ["prettier --write"],
+  ".env.*": ["dotenvx encrypt -f"]
 }
