@@ -7,6 +7,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
+    "create-local-env": "dotenvx decrypt --stdout -f .env.development > .env",
     "drizzle-kit": "drizzle-kit --config=./src/database/drizzle.config.ts",
     "prepare": "husky",
     "serve": "yarn drizzle-kit migrate && node .",
