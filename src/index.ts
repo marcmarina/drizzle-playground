@@ -1,4 +1,9 @@
-import "dotenv/config";
+import dotenvx from "@dotenvx/dotenvx";
+import path from "path";
+
+dotenvx.config({
+  path: [path.join(__dirname, "..", ".env")],
+});
 
 import { config } from "./config";
 import { createServer } from "./server";
