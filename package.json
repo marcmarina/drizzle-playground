@@ -12,7 +12,8 @@
     "serve": "yarn drizzle-kit migrate && node .",
     "services:start": "docker compose -f docker-compose.yml up",
     "services:stop": "docker compose -f docker-compose.yml down",
-    "start": "nodemon --exec ts-node src/index.ts"
+    "start": "nodemon --exec ts-node src/index.ts",
+    "test": "vitest"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -42,7 +43,8 @@
     "lint-staged": "^15.2.10",
     "nodemon": "^3.1.7",
     "prettier": "^3.3.3",
-    "prettier-package-json": "^2.6.4"
+    "prettier-package-json": "^2.6.4",
+    "vitest": "^4.0.16"
   },
   "packageManager": "yarn@4.5.0"
 }

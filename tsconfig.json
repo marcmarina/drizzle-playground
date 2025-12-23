@@ -4,6 +4,7 @@
     "declaration": true,
     "declarationMap": true,
     "lib": ["dom", "es2018"],
+    "types": ["vitest/globals"],
     "sourceMap": true,
     "strict": true,
     "moduleResolution": "node",
