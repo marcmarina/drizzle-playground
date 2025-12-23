@@ -3,7 +3,7 @@ namespace: default
 image:
   repository: harbor.marcmarina.com/library/drizzle-playground
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 container:
   command: "['node', '.']"
