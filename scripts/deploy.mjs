@@ -4,7 +4,7 @@ import "zx/globals";
 const registry = "harbor.marcmarina.com";
 const project = "library";
 const app = "drizzle-playground";
-const tag = argv.tag || argv._[0] || "latest";
+const tag = await $`git rev-parse --short HEAD`;
 
 const namespace = "default";
 
@@ -14,7 +14,7 @@ export async function build() {
 
   const image = `${registry}/${project}/${app}:${tag}`;
 
-  await $`docker build -t ${image} .`;
+  await $`docker build -t ${image} . --platform=linux/amd64`;
   await $`docker push ${image}`;
 
   console.log(chalk.green(`✓ Built ${app}:${tag}`));
