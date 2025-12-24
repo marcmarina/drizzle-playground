@@ -23,6 +23,8 @@ async function main() {
   });
 
   logger.info("Migrations ran successfully");
+
+  await pool.end();
 }
 
 main();

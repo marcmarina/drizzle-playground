@@ -15,6 +15,7 @@ import { config } from "./config";
 import { createServer } from "./server";
 import { logger } from "./logger";
 import { createHttpTerminator } from "http-terminator";
+import { pool } from "./database";
 
 async function main() {
   const server = createServer();
@@ -35,6 +36,10 @@ async function main() {
       logger.info(`${s} signal received. Closing server.`);
 
       await terminator.terminate();
+
+      await pool.end();
+
+      logger.info(`Server closed. Exiting process.`);
 
       process.exit(0);
     });
