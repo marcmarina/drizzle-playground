@@ -9,6 +9,8 @@
     "build": "tsc",
     "create-local-env": "dotenvx decrypt --stdout -fk .env.keys -f environments/.env.development > .env",
     "drizzle-kit": "drizzle-kit --config=./src/database/drizzle.config.ts",
+    "helm:template": "helm template drizzle-playground ./helm --debug",
+    "helm:upgrade": "helm upgrade --install drizzle-playground ./helm --wait --timeout 1m --atomic",
     "prepare": "husky",
     "services:start": "docker compose -f docker-compose.yml up",
     "services:stop": "docker compose -f docker-compose.yml down",
