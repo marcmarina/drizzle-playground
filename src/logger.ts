@@ -1,6 +1,7 @@
 import pino from "pino";
-import { config } from "./config";
 import { pinoHttp } from "pino-http";
+
+import { config } from "./config";
 
 export const logger = pino({
   level: config.logger.level,
@@ -25,7 +26,7 @@ export const httpLogger = pinoHttp({
 
     return crypto.randomUUID();
   },
-  customLogLevel: (req, res, err) => {
+  customLogLevel: (req, res) => {
     if (400 <= res.statusCode && res.statusCode < 500) {
       return "warn";
     } else if (500 <= res.statusCode) {

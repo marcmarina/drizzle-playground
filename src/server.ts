@@ -1,12 +1,12 @@
-import http from "http";
-import promBundle from "express-prom-bundle";
 import cors from "cors";
+import express, { Router } from "express";
+import promBundle from "express-prom-bundle";
+import http from "http";
+import { ZodError } from "zod";
 
+import { httpLogger } from "./logger";
 import { userRoutes } from "./routes";
 import { httpContextMiddleware } from "./utils/context";
-import express from "express";
-import { ZodError } from "zod";
-import { httpLogger } from "./logger";
 
 export function createServer() {
   const app = express();

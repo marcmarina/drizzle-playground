@@ -12,8 +12,10 @@ dotenvx.config({
 });
 
 import { migrate } from "drizzle-orm/node-postgres/migrator";
-import { pool, sql } from "./database";
+
 import { logger } from "../logger";
+
+import { pool, sql } from "./database";
 
 async function main() {
   logger.info("Running database migrations");

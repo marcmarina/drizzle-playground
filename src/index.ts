@@ -11,11 +11,12 @@ dotenvx.config({
   envKeysFile: path.join(__dirname, "../.env.keys"),
 });
 
-import { config } from "./config";
-import { createServer } from "./server";
-import { logger } from "./logger";
 import { createHttpTerminator } from "http-terminator";
+
+import { config } from "./config";
 import { pool } from "./database";
+import { logger } from "./logger";
+import { createServer } from "./server";
 
 async function main() {
   const server = createServer();
