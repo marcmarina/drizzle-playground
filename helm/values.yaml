@@ -31,3 +31,5 @@ env:
     secretKeyRef:
       name: drizzle-playground-dotenvx-keys
       key: DOTENV_PRIVATE_KEY_PRODUCTION
+- name: NODE_ENV
+  value: production
