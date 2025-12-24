@@ -1,13 +1,12 @@
 import dotenvx from "@dotenvx/dotenvx";
 import path from "path";
 
+const environment = process.env.NODE_ENV ?? "development";
+
 dotenvx.config({
   path: [
     path.join(__dirname, "../.env"),
-    path.join(
-      __dirname,
-      `../environments/.env.${process.env.NODE_ENV ?? "development"}`
-    ),
+    path.join(__dirname, `../environments/.env.${environment}`),
   ],
   envKeysFile: path.join(__dirname, "../.env.keys"),
 });
