@@ -8,6 +8,7 @@ COPY ./.yarn ./.yarn
 RUN yarn install
 
 COPY ./src ./src
+COPY ./environments ./environments
 
 RUN yarn build
 

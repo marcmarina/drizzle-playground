@@ -26,10 +26,7 @@ spec:
         ports:
         - containerPort: 80
         env:
-        {{- range $key, $value := .Values.env }}
-        - name: {{ $key }}
-          value: {{ $value | quote }}
-        {{- end }}
+{{ toYaml .Values.env | indent 8 }}
         readinessProbe:
           httpGet:
             path: {{ .Values.readinessProbe.path }}

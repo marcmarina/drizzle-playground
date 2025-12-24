@@ -78,4 +78,4 @@ schema-export
 .tmp
 
 .env
-.env.docker
+.env.keys

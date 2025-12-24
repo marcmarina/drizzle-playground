@@ -1,4 +1,15 @@
-import "dotenv/config";
+import dotenvx from "@dotenvx/dotenvx";
+import path from "path";
+
+const environment = process.env.NODE_ENV ?? "development";
+
+dotenvx.config({
+  path: [
+    path.join(__dirname, "../.env"),
+    path.join(__dirname, `../environments/.env.${environment}`),
+  ],
+  envKeysFile: path.join(__dirname, "../.env.keys"),
+});
 
 import { config } from "./config";
 import { createServer } from "./server";
@@ -16,7 +27,7 @@ async function main() {
 
   const terminator = createHttpTerminator({
     server,
-    gracefulTerminationTimeout: 3000,
+    gracefulTerminationTimeout: config.server.gracefulShutdownTimeoutMs,
   });
 
   exitSignals.forEach((s) => {
