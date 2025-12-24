@@ -14,6 +14,7 @@
     "prepare": "husky",
     "services:start": "docker compose -f docker-compose.yml up",
     "services:stop": "docker compose -f docker-compose.yml down",
+    "ship": "zx scripts/deploy.mjs",
     "start": "nodemon --exec ts-node src/index.ts",
     "test": "vitest"
   },
@@ -48,7 +49,8 @@
     "nodemon": "^3.1.7",
     "prettier": "^3.3.3",
     "prettier-package-json": "^2.6.4",
-    "vitest": "^4.0.16"
+    "vitest": "^4.0.16",
+    "zx": "^8.8.5"
   },
   "packageManager": "yarn@4.5.0"
 }
