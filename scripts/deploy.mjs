@@ -6,13 +6,13 @@ const project = "library";
 const app = "drizzle-playground";
 const tag = await $`git rev-parse --short HEAD`;
 
+const image = `${registry}/${project}/${app}:${tag}`;
+
 const namespace = "default";
 
 // Build
 export async function build() {
   console.log(chalk.blue(`Building ${app}:${tag}...`));
-
-  const image = `${registry}/${project}/${app}:${tag}`;
 
   await $`docker build -t ${image} . --platform=linux/amd64`;
   await $`docker push ${image}`;
