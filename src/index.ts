@@ -2,7 +2,14 @@ import dotenvx from "@dotenvx/dotenvx";
 import path from "path";
 
 dotenvx.config({
-  path: [path.join(__dirname, "..", ".env")],
+  path: [
+    path.join(__dirname, "../.env"),
+    path.join(
+      __dirname,
+      `../environments/.env.${process.env.NODE_ENV ?? "development"}`
+    ),
+  ],
+  envKeysFile: path.join(__dirname, "../.env.keys"),
 });
 
 import { config } from "./config";
