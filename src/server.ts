@@ -4,7 +4,7 @@ import cors from "cors";
 
 import { userRoutes } from "./routes";
 import { httpContextMiddleware } from "./utils/context";
-import express, { Router } from "express";
+import express from "express";
 import { ZodError } from "zod";
 import { httpLogger } from "./logger";
 
