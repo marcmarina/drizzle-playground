@@ -1,5 +1,5 @@
 import cors from "cors";
-import express, { Router } from "express";
+import express from "express";
 import promBundle from "express-prom-bundle";
 import http from "http";
 import { ZodError } from "zod";
