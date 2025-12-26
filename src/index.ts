@@ -24,16 +24,16 @@ async function main() {
     logger.info(`Server listening on port ${config.server.port}`);
   });
 
-  const exitSignals: NodeJS.Signals[] = ["SIGINT", "SIGTERM"];
-
   const terminator = createHttpTerminator({
     server,
     gracefulTerminationTimeout: config.server.gracefulShutdownTimeoutMs,
   });
 
-  exitSignals.forEach((s) => {
-    process.on(s, async () => {
-      logger.info(`${s} signal received. Closing server.`);
+  const exitSignals: NodeJS.Signals[] = ["SIGINT", "SIGTERM"];
+
+  exitSignals.forEach((signal) => {
+    process.on(signal, async () => {
+      logger.info(`${signal} signal received. Closing server.`);
 
       await terminator.terminate();
 
