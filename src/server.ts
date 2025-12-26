@@ -32,13 +32,9 @@ export function createServer() {
 
   app.use(httpLogger);
 
-  const router = Router();
-
-  router.get("/_health", (req, res) => {
+  app.get("/_health", (req, res) => {
     res.status(200).send("OK");
   });
-
-  app.use(router);
 
   app.use(userRoutes);
 
