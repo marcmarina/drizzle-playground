@@ -1,16 +1,27 @@
 namespace: default
 
 image:
-  repository: harbor.marcmarina.com/library/drizzle-playground
+  repository: harbor.marc-lab.dev/library/drizzle-playground
   tag: latest
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 container:
-  command: "['node', '.']"
+  command: ['node', 'dist/index.js']
+  migrateCommand: ['node', 'dist/database/migrate.js']
   port: 8080
 
 deployment:
-  replicaCount: 1
+  replicas: 1
+  preStop:
+    delay: 5
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi
 
 readinessProbe:
   path: /_health
@@ -25,11 +36,15 @@ service:
 ingress:
   host: drizzle-playground.marc-lab.dev
 
+# Config comes from environments/.env.production, decrypted at startup by
+# dotenvx with this key. The Secret is created by hand (not in git):
+#   kubectl -n default create secret generic drizzle-playground-dotenvx-keys \
+#     --from-literal=DOTENV_PRIVATE_KEY_PRODUCTION='<key>'
 env:
-- name: DOTENV_PRIVATE_KEY_PRODUCTION
-  valueFrom:
-    secretKeyRef:
-      name: drizzle-playground-dotenvx-keys
-      key: DOTENV_PRIVATE_KEY_PRODUCTION
-- name: NODE_ENV
-  value: production
+  - name: NODE_ENV
+    value: production
+  - name: DOTENV_PRIVATE_KEY_PRODUCTION
+    valueFrom:
+      secretKeyRef:
+        name: drizzle-playground-dotenvx-keys
+        key: DOTENV_PRIVATE_KEY_PRODUCTION

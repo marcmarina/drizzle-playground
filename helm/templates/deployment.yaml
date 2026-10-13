@@ -3,8 +3,14 @@ kind: Deployment
 metadata:
   name: {{ .Chart.Name }}
   namespace: {{ .Values.namespace }}
+  labels:
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    app.kubernetes.io/name: {{ .Chart.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Values.image.tag }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  replicas: {{ .Values.deployment.replicaCount }}
+  replicas: {{ .Values.deployment.replicas }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -17,34 +23,45 @@ spec:
     metadata:
       labels:
         app: {{ .Chart.Name }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+        app.kubernetes.io/name: {{ .Chart.Name }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/version: {{ .Values.image.tag }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
     spec:
+      initContainers:
+      - name: migrate
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: {{ toJson .Values.container.migrateCommand }}
+        env:
+          {{- toYaml .Values.env | nindent 10 }}
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy}}
-        command: {{ .Values.container.command }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: {{ toJson .Values.container.command }}
         ports:
-        - containerPort: 80
+        - containerPort: {{ .Values.container.port }}
         env:
-{{ toYaml .Values.env | indent 8 }}
+          {{- toYaml .Values.env | nindent 10 }}
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "sleep {{ .Values.deployment.preStop.delay }}"]
         readinessProbe:
           httpGet:
             path: {{ .Values.readinessProbe.path }}
             port: {{ .Values.container.port }}
-          initialDelaySeconds: 5  # Wait before first check
+          initialDelaySeconds: 5
           periodSeconds: 5
           failureThreshold: 3
         livenessProbe:
           httpGet:
             path: {{ .Values.livenessProbe.path }}
             port: {{ .Values.container.port }}
-          initialDelaySeconds: 15  # Give more time than readiness
+          initialDelaySeconds: 15
           periodSeconds: 10
           failureThreshold: 3
         resources:
-          limits:
-            cpu: "500m"
-            memory: "512Mi"
-          requests:
-            cpu: "250m"
-            memory: "256Mi"
+          {{- toYaml .Values.resources | nindent 10 }}
