@@ -29,6 +29,9 @@ readinessProbe:
 livenessProbe:
   path: /_health
 
+metrics:
+  endpoint: /metrics
+
 service:
   type: ClusterIP
   port: 80
