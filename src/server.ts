@@ -21,6 +21,7 @@ export function createServer() {
       includeMethod: true,
       includePath: true,
       includeStatusCode: true,
+      normalizePath: (req) => req.route?.path ?? "unknown",
       excludeRoutes: ["/metrics", "/_health"],
       customLabels: {
         service: "drizzle-playground",
