@@ -25,19 +25,19 @@ const profiles = {
   },
   stress: {
     stages: [
+      { duration: "3m", target: 25 },
       { duration: "3m", target: 50 },
+      { duration: "3m", target: 75 },
       { duration: "3m", target: 100 },
-      { duration: "3m", target: 150 },
-      { duration: "3m", target: 200 },
-      { duration: "5m", target: 200 },
+      { duration: "5m", target: 100 },
       { duration: "3m", target: 0 },
     ],
   },
   spike: {
     stages: [
       { duration: "30s", target: 5 },
-      { duration: "10s", target: 150 },
-      { duration: "1m", target: 150 },
+      { duration: "10s", target: 100 },
+      { duration: "1m", target: 100 },
       { duration: "10s", target: 5 },
       { duration: "30s", target: 5 },
       { duration: "10s", target: 0 },
