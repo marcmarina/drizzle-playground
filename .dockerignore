@@ -4,3 +4,4 @@ dist
 .git
 .yarn/*
 !.yarn/releases
+load-tests
