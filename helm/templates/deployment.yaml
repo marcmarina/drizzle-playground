@@ -10,7 +10,9 @@ metadata:
     app.kubernetes.io/version: {{ .Values.image.tag }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
+  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.deployment.replicas }}
+  {{- end }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -29,13 +31,6 @@ spec:
         app.kubernetes.io/version: {{ .Values.image.tag }}
         app.kubernetes.io/managed-by: {{ .Release.Service }}
     spec:
-      initContainers:
-      - name: migrate
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        command: {{ toJson .Values.container.migrateCommand }}
-        env:
-          {{- toYaml .Values.env | nindent 10 }}
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

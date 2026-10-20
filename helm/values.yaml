@@ -11,9 +11,19 @@ container:
   port: 8080
 
 deployment:
+  # Ignored while autoscaling is enabled; the HPA owns the replica count.
   replicas: 1
   preStop:
     delay: 5
+
+# CPU utilization is measured against resources.requests.cpu.
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+  scaleDownStabilizationSeconds: 300
 
 resources:
   requests:
